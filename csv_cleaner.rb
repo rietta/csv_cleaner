@@ -69,17 +69,17 @@ if options[:output_file].nil?
   exit 1;
 elsif "-" == options[:output_file]
   output_file = STDOUT
-elsif options[:output_file]  && File::exists?(options[:output_file])
+elsif options[:output_file]
   output_file = File.new(options[:output_file], 'w')
 else
-  raise "I don't know what to do with the input file you specified."
+  raise "I don't know what to do with the output file you specified."
 end
 
 #
 # Queue up the work!
 #
 
-clean_csv if output_file && input_file
+clean_csv(input_file, output_file) if output_file && input_file
 
 # Close out the files
 output_file.close if output_file
