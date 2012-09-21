@@ -17,10 +17,21 @@ def clean_csv(input, output)
   
   CSV.foreach(input) do |row|
     # use row here...
-    puts row.inspect
-  end
-  
-  
+    #puts row.inspect
+    
+    if row && row.kind_of?(Array)
+      # If this row is an array, clean it!
+      clean_row = Array.new
+      row.each do |cell|
+        # Remove all whitespace in the cell
+        clean_row.push(cell.to_s.strip) 
+      end # each
+
+      output.write clean_row.to_csv
+    end # parsed row
+    
+  end # foreach CSV row
+
 end # clean_csv
 
 
@@ -61,11 +72,16 @@ end
 
 
 if options[:input_file].nil?
+  # Read from standard in!
+   #input_file = STDIN
+  
   STDERR.puts "-- Nothing to do. No input file was specified.  Run csv_cleaner --help for usage."
   input_file = nil
   exit 1;
+ 
 elsif "-" == options[:input_file]
-  input_file = STDIN
+  raise "-- Standard in input is not yet implemented."
+  #input_file = STDIN
 elsif options[:input_file]  && File::exists?(options[:input_file])
   input_file = File.new(options[:input_file], 'r')
 else
