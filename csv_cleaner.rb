@@ -1,4 +1,4 @@
-#!/bin/env ruby
+#!/usr/bin/env ruby
 
 # Super Simple CSV Cleaner
 # Copyright 2012 Rietta Inc.
@@ -11,7 +11,16 @@ require 'optparse'
 # Process the CSV input using default settings and trim every cell.
 #
 def clean_csv(input, output)
-  raise "TODO: Implement CSV cleaner function!"
+  #raise "TODO: Implement CSV cleaner function!"
+  raise "Expect an input file, but didn't receive one."   unless nil != input && input.respond_to?(:read)
+  raise "Expect an output file, but didn't receive one."  unless nil != output && output.respond_to?(:write)
+  
+  CSV.foreach(input) do |row|
+    # use row here...
+    puts row.inspect
+  end
+  
+  
 end # clean_csv
 
 
@@ -64,9 +73,7 @@ else
 end
 
 if options[:output_file].nil?
-  STDERR.puts "-- Nothing to do. No output file was specified.  Run csv_cleaner --help for usage."
-  output_file = nil
-  exit 1;
+  output_file = STDOUT
 elsif "-" == options[:output_file]
   output_file = STDOUT
 elsif options[:output_file]
